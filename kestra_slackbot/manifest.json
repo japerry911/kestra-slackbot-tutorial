@@ -1,0 +1,24 @@
+{
+    "display_information": {
+        "name": "Kestra Slackbot Reviewer",
+        "description": "Here to review and resume Kestra executions.",
+        "background_color": "#FFFFFF"
+    },
+    "features": {
+        "bot_user": {
+            "display_name": "Kestra Slackbot Reviewer",
+            "always_online": true
+        }
+    },
+    "oauth_config": {
+        "redirect_urls": [
+            "INSERT_REDIRECT_URL_HERE"
+        ],
+        "scopes": {
+            "bot": [
+                "app_mentions:read",
+                "chat:write"
+            ]
+        }
+    }
+}

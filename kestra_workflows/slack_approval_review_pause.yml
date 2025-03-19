@@ -1,0 +1,71 @@
+id: slackApprovalReviewPause
+namespace: main
+description: |
+  This pauses the main execution workflow, and pings Slack and waits for approval 
+  from user through Slack bot.
+
+inputs:
+  - id: slack_webhook_url
+    type: STRING
+    required: true
+    description: |
+      The Slack Incoming Webhook URL for sending approval message.
+
+  - id: title
+    type: STRING
+    required: true
+    description: |
+      The title for the Slack Approval message.
+
+  - id: slack_bot_user_id
+    type: STRING
+    required: true
+    description: |
+      The Slack Bot User ID for the Slack bot.
+
+tasks:
+  - id: send_slack_approval_msg
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ inputs.slack_webhook_url }}"
+    payload: |
+      {
+        "blocks": [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "{{ inputs.title }}"
+            }
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "Review Link Section or Something, be creative :D ..."
+            }
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "<@{{ inputs.slack_bot_user_id }}>, will you review Kestra Execution ID: {{ execution.id }}?"
+            }
+          },
+          {
+            "type": "divider"
+          }
+        ]
+      }
+
+  - id: pause
+    type: io.kestra.plugin.core.flow.Pause
+    timeout: PT1H
